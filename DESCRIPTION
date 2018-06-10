@@ -6,9 +6,7 @@ LinkingTo: Rcpp
 SystemRequirements: C++11
 Imports: methods, Rcpp (>= 0.12.4)
 Date: 2018-06-10
-Authors@R: c(
-	person("Robert J.", "Hijmans", role = c("cre", "aut"),  email = "r.hijmans@gmail.com")
-)
+Authors@R: c(person("Robert J.", "Hijmans", role = c("cre", "aut"),  email = "r.hijmans@gmail.com"))
 Maintainer: Robert J. Hijmans <r.hijmans@gmail.com>
 Description: A set of functions for weather and climate data manipulation, and other helper functions, to support dynamic ecological modelling, particularly crop and crop disease modeling.
 License: GPL-3
