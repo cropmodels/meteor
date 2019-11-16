@@ -3,6 +3,6 @@ This is a R package to support crop model packages that are developer here (e.g.
 
 You can install it using: 
 
-devtools::install_github(cropmodels/meteor)
+`devtools::install_github("cropmodels/meteor")`
 
 
