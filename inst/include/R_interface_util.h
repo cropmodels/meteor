@@ -8,10 +8,8 @@ License: GNU General Public License (GNU GPL) v. 2
 #ifndef R_INTERFACE_UTIL_H_
 #define R_INTERFACE_UTIL_H_
 
-
 #include <Rcpp.h>
 using namespace Rcpp;
-using namespace std;
 #include <vector>
 #include <string>
 
@@ -189,6 +187,29 @@ inline std::vector<double> TBFromList(List lst, const char* s){
 	}
 	return result;
 }
+
+
+inline std::vector<double> TBFromList2(List lst, const char* s){
+	if(! lst.containsElementNamed(s)){
+		std::string ss = "parameter matrix '" +  std::string(s) + "' not found";
+		stop(ss);
+	}
+
+	NumericMatrix x = lst[s];
+	if(x.ncol() != 2){
+		std::string ss2 = "ncol != 2";
+		stop(ss2);
+	}
+	size_t nrow = x.nrow();
+	std::vector<double> result;
+	for(size_t i = 0; i < 2; i++){
+		for(size_t j = 0; j < nrow; j++){
+			result.push_back( x(j, i) );
+		}
+	}
+	return result;
+}
+
 
 inline std::vector<double> vecFromList(List lst, const char* s){
 	if(! lst.containsElementNamed(s)){

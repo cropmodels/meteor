@@ -63,28 +63,48 @@ inline double LIMIT(double min, double max, double v) {
 }
 
 inline double AFGEN(std::vector<double> xy, double x) {
-  int n = xy.size();
-  if(n == 0){
-    //cout << "input empty matrix for AFGEN" << endl;
-    throw "error";
-    exit(0);
-  }
-  double y = -1;
-  if (x < xy[0]) {
-    y = xy[1];
-  } else if (x > xy[n-2]) {
-    y = xy[n-1];
-  } else {
-    for(int i=2; i<n; i=i+2) {
-      if (xy[i] > x) {
-        double slope = (xy[i+1] - xy[i-1]) / (xy[i] - xy[i-2]);
-        y = xy[i-1] + (x - xy[i-2]) * slope;
-        break;
-      }
-    }
-  }
-  return(y);
+	int n = xy.size();
+	if(n == 0){
+		return(NAN);
+	}
+	double y = -1;
+	if (x < xy[0]) {
+		y = xy[1];
+	} else if (x > xy[n-2]) {
+		y = xy[n-1];
+	} else {
+		for(int i=2; i<n; i=i+2) {
+			if (xy[i] > x) {
+				double slope = (xy[i+1] - xy[i-1]) / (xy[i] - xy[i-2]);
+				y = xy[i-1] + (x - xy[i-2]) * slope;
+				break;
+			}
+		}
+	}
+	return(y);
 }
+
+
+inline double AFGEN2(const std::vector<double> &xy, const double &x) {
+	size_t n = xy.size();
+	size_t hn = n / 2;
+	double y = 0;
+	if (x <= xy[0]) {
+		y = xy[hn];
+	} else if (x >= xy[hn-1]) {
+		y = xy[n-1];
+	} else {
+		for (size_t i=1; i<hn; i++) {
+			if (x < xy[i]) {
+				double slope = (xy[i+hn] - xy[i+hn-1]) / (xy[i] - xy[i-1]);
+				y = xy[i+hn] + (x - xy[i]) * slope;
+				break;
+			}
+		}
+	}
+	return(y);
+}
+
 
 
 inline double LINT(std::vector<std::vector<double> > xy, double x) {
