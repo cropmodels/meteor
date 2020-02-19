@@ -64,9 +64,6 @@ inline double LIMIT(double min, double max, double v) {
 
 inline double AFGEN(std::vector<double> xy, double x) {
 	int n = xy.size();
-	if(n == 0){
-		return(NAN);
-	}
 	double y = -1;
 	if (x < xy[0]) {
 		y = xy[1];
