@@ -17,7 +17,7 @@ modifications
 */
 
 
-using namespace std;
+//using namespace std;
 #include <random>
 
 //int main() { return 0; }
@@ -71,7 +71,7 @@ std::vector<double> simmeteo_rain(std::vector<double> rain, std::vector<double> 
               Pwd = markov * raindays[m] / ndays;
               Pww = (1.00 - markov) + Pwd;
 
-              gamma_distribution<double> rgamma(alpha, beta);
+              std::gamma_distribution<double> rgamma(alpha, beta);
 
 // Robert Hijmans, June 2016
 // adjustment to assure that the change in average daily rainfall between days is smooth
