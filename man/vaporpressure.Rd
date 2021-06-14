@@ -8,15 +8,16 @@
 \title{Vapor pressure}
 
 \description{
-Functions to compute the saturated vapor pressure (SVP), actual vapor pressure (VP), and vapor pressure deficit (VPD) in Pascal.
+Functions to compute the saturated vapor pressure (SVP), actual vapor pressure (VP), and vapor pressure deficit (VPD) in Pascal or the dew-point temperature in C.
 
-For temperature < 0C the saturation vapour pressure equation for ice is used accoring to Goff and Gratch (1946), whereas for temperature >=0C that of Goff (1957) is used.
+For temperature < 0C the saturation vapour pressure equation for ice is used according to Goff and Gratch (1946), whereas for temperature >=0C that of Goff (1957) is used.
 }
 
 \usage{
 SVP(temp)
 VP(temp, relh)
 VPD(temp, relh)
+tDew(temp, relh)
 }
 
 
@@ -37,7 +38,7 @@ Goff, J. A. 1957. Saturation pressure of water on the new Kelvin temperature sca
 }
 
 \author{
-Robert Hijmans, based on Python meteolib by Maarten J. Waterloo and J. Delsman \url{http://python.hydrology-amsterdam.nl/}
+Robert Hijmans, partly based on Python meteolib by Maarten J. Waterloo and J. Delsman \url{http://python.hydrology-amsterdam.nl/}
 }
 
 \examples{
@@ -45,4 +46,5 @@ temperature <- seq(-10,30,10)
 SVP(temperature)
 VP(temperature, 60)
 VPD(temperature, 60)
+tDew(temperature, 60)
 }
