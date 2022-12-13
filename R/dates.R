@@ -9,6 +9,11 @@ yearFromDate <- function(date) {
 	as.numeric(format(as.Date(date), "%Y"))
 }
 
+weekFromDate <- function(date) {
+	date <- as.character(date)
+	strftime(date, format = "%V")
+}
+
 monthFromDate <- function(date) {
 	date <- as.character(date)
 	as.numeric(format(as.Date(date), "%m"))

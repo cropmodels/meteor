@@ -5,6 +5,24 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
+// bcppvars
+std::vector<double> bcppvars(std::vector<double> prec, std::vector<double> tmin, std::vector<double> tmax);
+RcppExport SEXP _meteor_bcppvars(SEXP precSEXP, SEXP tminSEXP, SEXP tmaxSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::vector<double> >::type prec(precSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type tmin(tminSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type tmax(tmaxSEXP);
+    rcpp_result_gen = Rcpp::wrap(bcppvars(prec, tmin, tmax));
+    return rcpp_result_gen;
+END_RCPP
+}
 // markov_rain
 NumericMatrix markov_rain(NumericVector rain, NumericVector rainydays, int years, double markov, unsigned seed);
 RcppExport SEXP _meteor_markov_rain(SEXP rainSEXP, SEXP rainydaysSEXP, SEXP yearsSEXP, SEXP markovSEXP, SEXP seedSEXP) {
@@ -204,6 +222,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_meteor_bcppvars", (DL_FUNC) &_meteor_bcppvars, 3},
     {"_meteor_markov_rain", (DL_FUNC) &_meteor_markov_rain, 5},
     {"_meteor_hourlyFromDailyTemp", (DL_FUNC) &_meteor_hourlyFromDailyTemp, 4},
     {"_meteor_hourlyFromDailyRH", (DL_FUNC) &_meteor_hourlyFromDailyRH, 5},

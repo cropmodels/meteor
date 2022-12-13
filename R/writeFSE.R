@@ -23,19 +23,26 @@ readFSEwth <- function(f) {
 
 
 
-.writeFSEwth <- function(w, country='AAA', station=1, lon=0, lat=0, elev=0,  path=getwd(), ... ) {
+writeFSEwth <- function(w, country="AAA", station=1, lon=0, lat=0, elev=0,  path=".") {
 	
-	if (isTRUE(list(...)$dotsboundlat)) {
-	  if ( lat > 60) { lat <- 59 }
-	  if ( lat < -60 ) { lat <- -59 }
+	nms <- c("date", "srad", "tmin", "tmax", "wind", "prec", "vapr")
+	if (!all(nms %in% colnames(w))) {
+		stop(paste("w does not have all names (", paste(nms, collapse=", "), ")"))
+	}
+	if (!dir.exists(path)) {
+		error("path does not exist")
 	}
 	
-  w$year <- yearFromDate(w$date)
-  years <- unique(w$year)
+	w$year <- yearFromDate(w$date)
+	years <- unique(w$year)
 
-  for (yr in years) {
-		fname <- paste(path, '/', country, station, '.', substr(yr, 2, 4), sep="")
-		thefile <- file(fname, "w")
+	fnames <- file.path(path, paste0(country, station, '.', substr(years, 2, 4)))
+
+	for (i in seq_along(years)) {
+
+		yr <- years[i]
+
+		thefile <- file(fnames[i], "w")
 		
 		cat("*-----------------------------------------------------------", "\n", file = thefile)
 		cat("*  Created by the R package 'weather'\n", file = thefile)
@@ -51,7 +58,7 @@ readFSEwth <- function(f) {
 		cat("*     8      mean wind speed         m s-1\n", file = thefile)
 		cat("*     9      precipitation          mm d-1\n", file = thefile)
 		cat("*\n", file = thefile)
-		cat("** WCCDESCRIPTION=gizmo\n", file = thefile)
+		cat("** WCCDESCRIPTION=meteor\n", file = thefile)
 		cat("** WCCFORMAT=2\n", file = thefile)
 		cat("** WCCYEARNR=", yr, "\n", file = thefile)
 		cat("*-----------------------------------------------------------", "\n", file = thefile)
@@ -59,15 +66,22 @@ readFSEwth <- function(f) {
 		cat(lon, lat, elev, '  0.00  0.00 \n', file = thefile)
 
 		yw <- w[w$year==yr, ]
-		
 		yw[is.na(yw)] <- -9999
+		
+		expected <- diff(as.Date(paste0(yr, c("-01-01", "-12-31")))) + 1
+		
+		if (expected != nrow(yw)) {
+			warning(paste("the data for year", yr, "is incomplete"))
+		}
+		
 		for (d in 1:nrow(yw)) {
 			cat("1  ", sprintf("%6.0f", yr), sprintf("%5.0f", d), sprintf("%10.0f", yw$srad[d]), sprintf("%8.1f", yw$tmin[d]), sprintf("%8.1f", yw$tmax[d]), sprintf("%8.1f", yw$vapr[d]), sprintf("%8.1f", yw$wind[d]), sprintf("%8.1f", yw$prec[d]), "\n", file=thefile)
 		}
 		close(thefile)
     }
-	return(invisible(fname))
+	return(invisible(fnames))
 }		
+
 #wth$srad = wth$srad * 1000
 #writeFSEwth(wth, 'NLD', 3, 5.67,51.97, 7 )
 
