@@ -30,7 +30,7 @@ writeFSEwth <- function(w, country="AAA", station=1, lon=0, lat=0, elev=0,  path
 		stop(paste("w does not have all names (", paste(nms, collapse=", "), ")"))
 	}
 	if (!dir.exists(path)) {
-		error("path does not exist")
+		stop("path does not exist")
 	}
 	
 	w$year <- yearFromDate(w$date)

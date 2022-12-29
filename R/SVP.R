@@ -22,10 +22,10 @@ VPD <- function(temp, relh) {
 # log10(vp /.611) / 7.5 = tdw / (237.7 + tdew)
 ## y = x / (x + a)  =>   x = ya / (1-y)
 
-tDew <- function(tmp, relh) {
+tDew <- function(temp, relh) {
 	relh <- pmin(relh, 100)
 	relh <- pmax(relh, 0)
-	svp <- .saturatedVaporPressure(tmp)
+	svp <- .saturatedVaporPressure(temp)
 	vp <- svp * relh / 100
 	y <- log10(vp /.611) / 7.5
 	(y * 237.7) / (1 - y)

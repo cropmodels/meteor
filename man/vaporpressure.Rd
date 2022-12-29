@@ -3,6 +3,7 @@
 \alias{SVP}
 \alias{VP}
 \alias{VPD}
+\alias{tDew}
 
 
 \title{Vapor pressure}

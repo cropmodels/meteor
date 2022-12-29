@@ -1,8 +1,5 @@
 \name{dates}
 
-\alias{fromDate}
-\alias{fromYear}
-
 \alias{dateFromDoy}
 \alias{doyFromDate}
 \alias{dayFromDate}
@@ -19,9 +16,6 @@ Helper functions for manipulation of dates, includding conversion between (day o
 }
 
 \usage{
-fromDate(x, v)
-fromYear(y, v)
-
 dateFromDoy(doy, year)
 doyFromDate(date)
 dayFromDate(date)

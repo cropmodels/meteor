@@ -15,7 +15,7 @@ Read or write FSE formatted weather data
 
 \usage{
 readFSEwth(f)
-writeFSEwth(w, country='AAA', station=1, lon=0, lat=0, elev=0,  path=".", ...)
+writeFSEwth(w, country='AAA', station=1, lon=0, lat=0, elev=0,  path=".")
 
 example_weather()
 }
