@@ -14,7 +14,7 @@
 \title{globe temperature}
 
 \description{
-Globe temperature for either a data.frame or a SpatRasterDataset. Either must have variables "temp" (C), "rhum" (%), "wind" (m s-1), and "srad" (J s-1 m-2). The data.frame must also have a variable "date".
+Globe temperature for either a \code{data.frame} or a \code{SpatRasterDataset}. These must have variables "temp" (C), "rhum" (\%), "wind" (m s-1), and "srad" (J s-1 m-2). The \code{data.frame} must also have a variable "date".
 }
 
 \usage{
@@ -27,7 +27,7 @@ Globe temperature for either a data.frame or a SpatRasterDataset. Either must ha
 }
 
 \arguments{
-  \item{x}{data.frame or SpatRaster}
+  \item{x}{data.frame or SpatRasterDataset}
   \item{latitude}{numeric}
   \item{filename}{character. Output filename}
   \item{overwrite}{logical. If \code{TRUE}, \code{filename} is overwritten}  
