@@ -53,3 +53,40 @@ dateFromDoy <- function(doy, year) {
 	doy <- round(doy)
 	return(as.Date(doy, origin=paste(year-1, "-12-31", sep='')))
 }
+
+
+
+fromDate <- function(x, v) {
+	v <- trimws(tolower(v))
+	if (v == "year") {
+		return(yearFromDate(x))
+	} 
+	if (v == "week") {
+		return(weekFromDate(x))
+	}
+	if (v == "month") {
+		return(monthFromDate(x))
+	}
+	if (v == "day") {
+		return(dayFromDate(x))
+	}
+	if (v == "doy") {
+		return(doyFromDate(x))
+	}
+	stop("v is not valid")
+}
+
+
+fromYear <- function(y, v) {
+	if (v == "leap") {
+		return(isLeapYear(y))
+	}
+	if (v == "ndays") {
+		return(daysInYear(y))
+	}
+	if (v == "days") {
+		return(daysOfYear(y))
+	}
+	stop("v is not valid")
+}	
+

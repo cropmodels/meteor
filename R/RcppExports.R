@@ -5,6 +5,30 @@ bcppvars <- function(prec, tmin, tmax) {
     .Call(`_meteor_bcppvars`, prec, tmin, tmax)
 }
 
+utci <- function(ta, tg, va, hurs) {
+    .Call(`_meteor_utci`, ta, tg, va, hurs)
+}
+
+pwc_utci <- function(utci) {
+    .Call(`_meteor_pwc_utci`, utci)
+}
+
+pwc_wbgt <- function(wbgt) {
+    .Call(`_meteor_pwc_wbgt`, wbgt)
+}
+
+Tg1 <- function(tas, hurs, wind, srad, year, doy, lat) {
+    .Call(`_meteor_Tg1`, tas, hurs, wind, srad, year, doy, lat)
+}
+
+Tnwb1 <- function(tas, hurs, wind, srad, year, doy, lat, natural = TRUE) {
+    .Call(`_meteor_Tnwb1`, tas, hurs, wind, srad, year, doy, lat, natural)
+}
+
+Tnwb2 <- function(tas, hurs, wind, srad, lat, year, doy, natural = TRUE) {
+    .Call(`_meteor_Tnwb2`, tas, hurs, wind, srad, lat, year, doy, natural)
+}
+
 .markov_rain <- function(rain, rainydays, years, markov, seed) {
     .Call(`_meteor_markov_rain`, rain, rainydays, years, markov, seed)
 }
