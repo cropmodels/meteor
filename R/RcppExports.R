@@ -17,15 +17,19 @@ pwc_wbgt <- function(wbgt) {
     .Call(`_meteor_pwc_wbgt`, wbgt)
 }
 
-Tg1 <- function(tas, hurs, wind, srad, year, doy, lat) {
+.Tg1 <- function(tas, hurs, wind, srad, year, doy, lat) {
     .Call(`_meteor_Tg1`, tas, hurs, wind, srad, year, doy, lat)
 }
 
-Tnwb1 <- function(tas, hurs, wind, srad, year, doy, lat, natural = TRUE) {
+.Tg2 <- function(tas, hurs, wind, srad, year, doy, lat) {
+    .Call(`_meteor_Tg2`, tas, hurs, wind, srad, year, doy, lat)
+}
+
+.Tnwb1 <- function(tas, hurs, wind, srad, year, doy, lat, natural = TRUE) {
     .Call(`_meteor_Tnwb1`, tas, hurs, wind, srad, year, doy, lat, natural)
 }
 
-Tnwb2 <- function(tas, hurs, wind, srad, lat, year, doy, natural = TRUE) {
+.Tnwb2 <- function(tas, hurs, wind, srad, lat, year, doy, natural = TRUE) {
     .Call(`_meteor_Tnwb2`, tas, hurs, wind, srad, lat, year, doy, natural)
 }
 

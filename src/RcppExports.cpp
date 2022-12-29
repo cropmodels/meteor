@@ -76,6 +76,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// Tg2
+std::vector<double> Tg2(Rcpp::NumericMatrix tas, Rcpp::NumericMatrix hurs, Rcpp::NumericMatrix wind, Rcpp::NumericMatrix srad, const Rcpp::NumericVector year, Rcpp::NumericVector doy, const Rcpp::NumericVector lat);
+RcppExport SEXP _meteor_Tg2(SEXP tasSEXP, SEXP hursSEXP, SEXP windSEXP, SEXP sradSEXP, SEXP yearSEXP, SEXP doySEXP, SEXP latSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type tas(tasSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type hurs(hursSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type wind(windSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type srad(sradSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector >::type year(yearSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type doy(doySEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector >::type lat(latSEXP);
+    rcpp_result_gen = Rcpp::wrap(Tg2(tas, hurs, wind, srad, year, doy, lat));
+    return rcpp_result_gen;
+END_RCPP
+}
 // Tnwb1
 std::vector<double> Tnwb1(const Rcpp::NumericVector tas, const Rcpp::NumericVector hurs, const Rcpp::NumericVector wind, const Rcpp::NumericVector srad, Rcpp::NumericVector year, Rcpp::NumericVector doy, double lat, bool natural);
 RcppExport SEXP _meteor_Tnwb1(SEXP tasSEXP, SEXP hursSEXP, SEXP windSEXP, SEXP sradSEXP, SEXP yearSEXP, SEXP doySEXP, SEXP latSEXP, SEXP naturalSEXP) {
@@ -316,6 +333,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_meteor_pwc_utci", (DL_FUNC) &_meteor_pwc_utci, 1},
     {"_meteor_pwc_wbgt", (DL_FUNC) &_meteor_pwc_wbgt, 1},
     {"_meteor_Tg1", (DL_FUNC) &_meteor_Tg1, 7},
+    {"_meteor_Tg2", (DL_FUNC) &_meteor_Tg2, 7},
     {"_meteor_Tnwb1", (DL_FUNC) &_meteor_Tnwb1, 8},
     {"_meteor_Tnwb2", (DL_FUNC) &_meteor_Tnwb2, 8},
     {"_meteor_markov_rain", (DL_FUNC) &_meteor_markov_rain, 5},

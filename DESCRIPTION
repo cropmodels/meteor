@@ -5,6 +5,7 @@ Version: 0.4-1
 LinkingTo: Rcpp
 SystemRequirements: C++11
 Imports: methods, Rcpp (>= 0.12.4)
+Suggests: terra
 Date: 2020-02-18
 Authors@R: c(person("Robert J.", "Hijmans", role = c("cre", "aut"), email="r.hijmans@gmail.com"), person("Gerald", "Nelson", role = "ctb"), person("Maarten", "Waterloo", role = "ctb"))
 Maintainer: Robert J. Hijmans <r.hijmans@gmail.com>
