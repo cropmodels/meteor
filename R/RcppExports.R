@@ -5,15 +5,15 @@ bcppvars <- function(prec, tmin, tmax) {
     .Call(`_meteor_bcppvars`, prec, tmin, tmax)
 }
 
-utci <- function(ta, tg, va, hurs) {
-    .Call(`_meteor_utci`, ta, tg, va, hurs)
+.utci <- function(ta, tg, va, hurs) {
+    .Call(`_meteor_v_utci`, ta, tg, va, hurs)
 }
 
-pwc_utci <- function(utci) {
+.pwc_utci <- function(utci) {
     .Call(`_meteor_pwc_utci`, utci)
 }
 
-pwc_wbgt <- function(wbgt) {
+.pwc_wbgt <- function(wbgt) {
     .Call(`_meteor_pwc_wbgt`, wbgt)
 }
 

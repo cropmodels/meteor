@@ -57,7 +57,7 @@ setMethod("Tnwb", signature(x="data.frame"),
 		}
 		year <- fromDate(x$date, "year")
 		doy <- fromDate(x$date, "doy")
-		.Tnwb1(x$temp, x$rhum, x$wind, x$srad, year, doy, latitude)
+		.Tnwb1(x$temp, x$rhum, x$wind, x$srad, year, doy, latitude, TRUE)
 	}
 )
 
