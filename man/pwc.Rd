@@ -1,7 +1,7 @@
 \name{pwc}
 
 \alias{pwc}
-\alias{pwc,data.frame-method}
+\alias{pwc,numeric-method}
 \alias{pwc,SpatRaster-method}
 
 
@@ -12,14 +12,14 @@ pwc
 }
 
 \usage{
-\S4method{pwc}{data.frame}(x, input="wbgt")
+\S4method{pwc}{numeric}(x, input="wbgt")
 
 \S4method{pwc}{SpatRaster}(x, input="wbgt", filename="", overwrite=FALSE, ...)
 }
 
 \arguments{
-  \item{x}{data.frame or SpatRaster}
-  \item{input}{charcter. One of "wbgt" or "ucti"}
+  \item{x}{numeric or SpatRaster}
+  \item{input}{character. One of "wbgt" or "utci"}
   \item{filename}{character. Output filename}
   \item{overwrite}{logical. If \code{TRUE}, \code{filename} is overwritten}  
   \item{...}{additional arguments for writing files as in \code{\link[terra]{writeRaster}}}    

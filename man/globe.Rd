@@ -6,9 +6,11 @@
 
 \alias{Tnwb}
 \alias{Tnwb,data.frame-method}
+\alias{Tnwb,SpatRasterDataset-method}
 
 \alias{WBGT}
 \alias{WBGT,data.frame-method}
+\alias{WBGT,SpatRasterDataset-method}
 
 
 \title{globe temperature}
@@ -22,9 +24,12 @@ Globe temperature for either a \code{data.frame} or a \code{SpatRasterDataset}. 
 \S4method{Tg}{SpatRasterDataset}(x, filename="", overwrite=FALSE, ...)
 
 \S4method{Tnwb}{data.frame}(x, latitude)
+\S4method{Tnwb}{SpatRasterDataset}(x, filename="", overwrite=FALSE, ...)
 
 \S4method{WBGT}{data.frame}(x, latitude)
+\S4method{WBGT}{SpatRasterDataset}(x, filename="", overwrite=FALSE, ...)
 }
+
 
 \arguments{
   \item{x}{data.frame or SpatRasterDataset}
@@ -45,4 +50,17 @@ Tg(wd, 40.96)
 Tnwb(wd, 40.96) 
 
 WBGT(wd, 40.96) 
+
+
+library(terra)
+r <- rast(ncol=2, nrow=2, nlyr=1)
+temp <- setValues(r, 21:24)
+time(temp) <- as.Date("2000-01-01")
+rhum <- setValues(r, 81:84)
+wind <- setValues(r, 9:12)
+srad <- setValues(r, 100:103)
+s <- sds(list(temp=temp, rhum=rhum, wind=wind, srad=srad))
+
+x <- Tg(s)
+y <- WBGT(s)
 }
