@@ -63,8 +63,12 @@ NumericVector Photoperiod(NumericVector doy, NumericVector latitude) {
 	NumericVector out(doy.size());
 	int d;
 	for (int i=0; i < out.size(); i++) {
-		d = int(doy[i]) % 365;
-  		out[i] = photoperiod(d, latitude[i]);
+		if (std::isnan(doy[i]) || std::isnan(latitude[i])) {
+			out[i] = NAN;
+		} else {
+			d = int(doy[i]) % 365;
+			out[i] = photoperiod(d, latitude[i]);
+		}
 	}
 	return(out);
 }

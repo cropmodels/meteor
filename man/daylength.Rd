@@ -1,6 +1,10 @@
 \name{photoperiod}
 
 \alias{photoperiod}
+\alias{photoperiod,numeric-method}
+\alias{photoperiod,Date-method}
+\alias{photoperiod,data.frame-method}
+\alias{photoperiod,SpatRaster-method}
 
 \title{ photoperiod}
 
@@ -9,12 +13,19 @@ Compute photoperiod (daylength, sunshine duration) at a given latitude and day o
 }
 
 \usage{
-photoperiod(doy, latitude)
+\S4method{photoperiod}{Date}(x, latitude)
+
+\S4method{photoperiod}{data.frame}(x)
+
+\S4method{photoperiod}{SpatRaster}(x, filename="", overwrite=FALSE, ...)
 }
 
 \arguments{
-  \item{doy}{integer. Day of the year. Integer between 1 and 365}
-  \item{latitude}{numeric. Latitude, in degrees, should be between -90 and 90 }
+  \item{x}{Date, integer (day of the year), or data.frame (with variables "date" and "latitude", or SpatRaster}
+  \item{latitude}{numeric. Latitude}
+  \item{filename}{character. Output filename}
+  \item{overwrite}{logical. If \code{TRUE}, \code{filename} is overwritten}  
+  \item{...}{additional arguments for writing files as in \code{\link[terra]{writeRaster}}}     
 }
 
 \value{

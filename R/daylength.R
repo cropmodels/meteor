@@ -1,16 +1,70 @@
 # Author: Robert J. Hijmans
 # License GPL3
 
+if (!isGeneric("photoperiod")) {setGeneric("photoperiod", function(x, ...) standardGeneric("photoperiod"))}
 
-photoperiod <- function(doy, latitude) {
-	d <- cbind(doy, latitude)
-    .Call('_meteor_Photoperiod', PACKAGE = 'meteor', d[,1], d[,2])
-}
+
+setMethod("photoperiod", signature(x="Date"),
+	function(x, latitude) {
+		x <- fromDate(x, "doy")
+		x <- cbind(x, latitude)
+		.Call('_meteor_Photoperiod', PACKAGE = 'meteor', x[,1], x[,2])
+	}
+)
+
+setMethod("photoperiod", signature(x="numeric"),
+	function(x, latitude) {
+		x <- cbind(x, latitude)
+		.Call('_meteor_Photoperiod', PACKAGE = 'meteor', x[,1], x[,2])
+	}
+)
+
+setMethod("photoperiod", signature(x="data.frame"),
+	function(x) {
+		if (!all(c("date", "latitude") %in% names(x))) {
+			stop("x must have variables 'date', and 'latitude'")		
+		}
+		doy <- fromDate(x$date, "doy")
+		.Call('_meteor_Photoperiod', PACKAGE = 'meteor', x$date, x$latitude)
+	}
+)
+
+setMethod("photoperiod", signature(x="SpatRaster"),
+	function(x, filename="", overwrite=FALSE, ...) {
+		d <- terra::time(x)
+		if (all(is.na(d))) {
+			stop("the layers in x have no time stamps")
+		}
+		r <- terra::rast(x)[[1]]
+		if (!terra::is.lonlat(x)) {
+			lat <- terra::as.points(r, values=FALSE, na.rm=FALSE)
+			lat <- terra::project(lat, crs="+proj=longlat")
+			lat <- terra::crds(lat)[,2]
+			dd <- data.frame(latitude=rep(lat, length(d)), date=rep(d, each=length(lat)))
+			r <- terra::rast(x)
+			terra::values(r) <- photoperiod(dd)
+			if (filename != "") {
+				r <- terra::writeRaster(r, filename=filename, overwrite=overwrite, ...)
+			}
+			r
+		} else {
+			r <- r[,1,drop=FALSE]
+			terra::ext(r) <- terra::ext(x)
+			lat <- terra::yFromRow(r, 1:nrow(r))
+			dd <- data.frame(latitude=rep(lat, length(d)), date=rep(d, each=length(lat)))
+			r <- terra::rast(x)
+			terra::values(r) <- photoperiod(dd)
+			terra::disagg(r, c(1, ncol(x)), filename=filename, overwrite=overwrite, ...)
+		}		
+	}
+)
+
 
 
 .daylength <- function(lat, doy) {
-	if (class(doy) == 'Date' | class(doy) == 'character') {
-		doy <- doyFromDate(doy)
+
+	if (inherits(doy, 'Date') | inherits(doy, 'character')) {
+		doy <- fromDate(doy, "doy")
 	}
 	lat[lat > 90 | lat < -90] <- NA
 	doy <- doy %% 365
@@ -25,16 +79,11 @@ photoperiod <- function(doy, latitude) {
 }
 
 .daylength2 <- function(lat, doy) {
-	if (class(doy) == 'Date' | class(doy) == 'character') {
+	if (inherits(doy, 'Date') | inherits(doy, 'character')) {
 		doy <- doyFromDate(doy)
 	}
 	lat[lat > 90 | lat < -90] <- NA
-	doy[doy==366] <- 365
-	doy[doy < 1] <- 365 + doy[doy < 1]
-	doy[doy > 365] <- doy[doy > 365] - 365
-	if (isTRUE(any(doy<1))  | isTRUE(any(doy>365))) {
-		stop('cannot understand value for doy')
-	}
+	doy <- doy %% 365
 
 # after Goudriaan and Van Laar
 	RAD <- pi/180

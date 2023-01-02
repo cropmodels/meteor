@@ -4,6 +4,10 @@ using namespace std;
 #include <numeric>
 
 
+const double pi = 3.141592653589793238462643383279502884197169399375;
+const double torad = pi / 180;
+
+
 /*
 Variable names
 temp: air temperature (degrees C)
@@ -16,12 +20,10 @@ Rn: average daily net radiation [J m-2 d-1].
 double photoperiod(int doy, double latitude) {
 // Forsythe, William C., Edward J. Rykiel Jr., Randal S. Stahl, Hsin-i Wu and Robert M. Schoolfield, 1995.
 // Ecological Modeling 80: 87-95. A Model Comparison for Daylength as a Function of Latitude and Day of the Year.
-	if ((latitude > 90) || (latitude < -90)) { return(-1);}
+	if ((latitude > 90) || (latitude < -90)) { return(NAN);}
 	double P = asin(0.39795 * cos(0.2163108 + 2 * atan(0.9671396 * tan(0.00860*(doy-186)))));
-	double pi = 3.141592653589793238462643383279502884197169399375;
-	double torad = pi / 180;
 	latitude = latitude * torad;
-	double a =  (sin(0.8333 * torad) + sin(latitude) * sin(P)) / (cos(latitude) * cos(P));
+	double a = (sin(0.8333 * torad) + sin(latitude) * sin(P)) / (cos(latitude) * cos(P));
 	a =  std::min(std::max(a, -1.), 1.);
 	return (  24 - (24 / pi) * acos(a) );
 }
