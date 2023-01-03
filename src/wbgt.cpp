@@ -355,9 +355,9 @@ std::vector<double> Tnwb1(const Rcpp::NumericVector tas, const Rcpp::NumericVect
 		double Tkel = tas[i];
 		double Tcel = tas[i];
 		if (kelvin) {
-			Tkel += kVal;
-		} else {
 			Tcel -= kVal;
+		} else {
+			Tkel += kVal;
 		}
 		double eair = relh * esat(Tkel);	
 		double emis_atm_out = emis_atm(Tkel, relh);
