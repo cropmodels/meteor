@@ -112,8 +112,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // Tnwb2
-std::vector<double> Tnwb2(const Rcpp::NumericMatrix tas, const Rcpp::NumericMatrix hurs, const Rcpp::NumericMatrix wind, const Rcpp::NumericMatrix srad, const Rcpp::NumericVector lat, const Rcpp::NumericVector year, const Rcpp::NumericVector doy, bool natural);
-RcppExport SEXP _meteor_Tnwb2(SEXP tasSEXP, SEXP hursSEXP, SEXP windSEXP, SEXP sradSEXP, SEXP latSEXP, SEXP yearSEXP, SEXP doySEXP, SEXP naturalSEXP) {
+std::vector<double> Tnwb2(const Rcpp::NumericMatrix tas, const Rcpp::NumericMatrix hurs, const Rcpp::NumericMatrix wind, const Rcpp::NumericMatrix srad, const Rcpp::NumericVector year, const Rcpp::NumericVector doy, const Rcpp::NumericVector lat, bool natural);
+RcppExport SEXP _meteor_Tnwb2(SEXP tasSEXP, SEXP hursSEXP, SEXP windSEXP, SEXP sradSEXP, SEXP yearSEXP, SEXP doySEXP, SEXP latSEXP, SEXP naturalSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -121,11 +121,11 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const Rcpp::NumericMatrix >::type hurs(hursSEXP);
     Rcpp::traits::input_parameter< const Rcpp::NumericMatrix >::type wind(windSEXP);
     Rcpp::traits::input_parameter< const Rcpp::NumericMatrix >::type srad(sradSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::NumericVector >::type lat(latSEXP);
     Rcpp::traits::input_parameter< const Rcpp::NumericVector >::type year(yearSEXP);
     Rcpp::traits::input_parameter< const Rcpp::NumericVector >::type doy(doySEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector >::type lat(latSEXP);
     Rcpp::traits::input_parameter< bool >::type natural(naturalSEXP);
-    rcpp_result_gen = Rcpp::wrap(Tnwb2(tas, hurs, wind, srad, lat, year, doy, natural));
+    rcpp_result_gen = Rcpp::wrap(Tnwb2(tas, hurs, wind, srad, year, doy, lat, natural));
     return rcpp_result_gen;
 END_RCPP
 }

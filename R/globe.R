@@ -88,6 +88,7 @@ setMethod("Tnwb", signature(x="SpatRasterDataset"),
 			c2 <- (b$row[i]+b$nrows[i]-1) * nc 
 			lat <- terra::yFromCell(r, c1:c2)
 			tnwb <- .Tnwb2(temp, rhum, wind, srad, year, doy, lat, TRUE)
+			tnwb <- as.vector(matrix(tnwb, ncol=ncol(temp), nrow=nrow(temp), byrow=TRUE))
 			terra::writeValues(out, tnwb, b$row[i], b$nrows[i])
 		}
 		terra::writeStop(out)
@@ -132,7 +133,8 @@ setMethod("WBGT", signature(x="SpatRasterDataset"),
 			c1 <- (b$row[i]-1) * nc + 1 
 			c2 <- (b$row[i]+b$nrows[i]-1) * nc 
 			lat <- terra::yFromCell(r, c1:c2)
-			tnwb <- .Tnwb2(temp, rhum, wind, srad, year, doy, lat, FALSE)
+			tnwb <- .Tnwb2(temp, rhum, wind, srad, lat, year, doy, lat, FALSE)
+			tnwb <- as.vector(matrix(tnwb, ncol=ncol(temp), nrow=nrow(temp), byrow=TRUE))
 			terra::writeValues(out, tnwb, b$row[i], b$nrows[i])
 		}
 		terra::writeStop(out)

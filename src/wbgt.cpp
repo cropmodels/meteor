@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include <cmath>
+#include "Rcpp.h"
 
 // Physical constants
 const double stefanb  =  0.000000056696;
@@ -70,15 +71,15 @@ inline double emis_atm(const double& Tk, const double& relh) {
 }
 
 
-inline double Tdew(const double& tas, const double& RH) {
+inline double Tdew(const double& ktas, const double& RH) {
   // Source: Lawrence, M. G. (2005). The Relationship between Relative Humidity and the Dewpoint Temperature in Moist Air: A Simple Conversion and Applications. Bulletin of the American Meteorological Society, 86(2), 225–234. doi: 10.1175/BAMS-86-2-225
   // constants for new dewpoint temperature
 	double a1 = 17.625;
 	double b1 = 243.04;
 	double relh = RH/100;
-  
-	double dew = (b1 * (log(relh) + (a1 * tas)/(b1 + tas))) / (a1 - log(relh) - (a1 * tas)/(b1 + tas));
-	return dew + kVal;
+	double logrh = log(relh);
+	double dew = (b1 * (logrh + (a1 * ktas)/(b1 + ktas))) / (a1 - logrh - (a1 * ktas)/(b1 + ktas));
+	return dew;
 }
 
 
@@ -215,10 +216,8 @@ inline double optim_Tnwb(const double &Tair, const double &hurs, const double &s
 	double &radiation, const double &zenith_rad, const double &viscosity, const double &emis_atm_out, 
 	const double &eair, const double &density, const double &tolerance) {
   
-	double tas = Tair - kVal;
-	double Tdew_out = Tdew(tas, hurs);
-  
-	std::vector<double> rng = seq(Tdew_out-1.0, Tair+10.0, tolerance);
+	double tdew = Tdew(Tair - kVal, hurs) + kVal;
+	std::vector<double> rng = seq(tdew-1.0, Tair+10.0, tolerance);
 	size_t m = rng.size();
   
 	double tst1 = fr_tnwb(rng[0], Tair, speed, radiation, zenith_rad, viscosity, emis_atm_out, eair, density);
@@ -279,7 +278,6 @@ void fix_zrad(double &radiation, double &zenith_rad) {
 	if ((radiation < 10.) & (zenith_rad == 1.57)) radiation = 0.;
 }
 
-#include "Rcpp.h"
 
 // globe temperature Tg
 // [[Rcpp::export(name = ".Tg1")]]
@@ -324,10 +322,11 @@ std::vector<double> Tg2(Rcpp::NumericMatrix tas, Rcpp::NumericMatrix hurs,
 		 Rcpp::NumericVector doy, const Rcpp::NumericVector lat) {
 			 
 	std::vector<double> out;
-	size_t n = year.size();
-	out.reserve(tas.size());
+	size_t n = lat.size();
+	size_t rs = n * year.size();
+	out.reserve(rs);
 	for (size_t i=0; i<n; i++) {
-		std::vector<double> x = Tg1(tas(Rcpp::_, i), hurs(Rcpp::_, i), wind(Rcpp::_, i), srad(Rcpp::_, i),year, doy, lat(i)); 
+		std::vector<double> x = Tg1(tas(i, Rcpp::_), hurs(i, Rcpp::_), wind(i, Rcpp::_), srad(i, Rcpp::_), year, doy, lat(i)); 
 		out.insert(out.end(), x.begin(), x.end());
 	}
 	return out;
@@ -343,7 +342,7 @@ std::vector<double> Tnwb1(const Rcpp::NumericVector tas, const Rcpp::NumericVect
 	const double tolerance=0.1;
 	std::vector<double> out;
 	size_t ds = doy.size();
-	out.reserve(tas.size());
+	out.reserve(ds);
 
 	for (size_t i=0; i<ds; i++) {
 		if (std::isnan(tas[i]) || std::isnan(hurs[i]) || std::isnan(wind[i]) || std::isnan(srad[i])) {
@@ -362,6 +361,7 @@ std::vector<double> Tnwb1(const Rcpp::NumericVector tas, const Rcpp::NumericVect
 		
 		double density = Pair * 100./(Tair * r_air); // 
 		double visc = viscosity(Tair);
+	
 		double Tnwb = optim_Tnwb(Tair, hurs[i], wind[i], radiation, zenith_rad, visc, emis_atm_out, eair, density, tolerance);
 		
 		if (natural) {
@@ -379,14 +379,15 @@ std::vector<double> Tnwb1(const Rcpp::NumericVector tas, const Rcpp::NumericVect
 // [[Rcpp::export(name = ".Tnwb2")]]
 std::vector<double> Tnwb2(const Rcpp::NumericMatrix tas, const Rcpp::NumericMatrix hurs,
     const Rcpp::NumericMatrix wind, const Rcpp::NumericMatrix srad, 
-	const Rcpp::NumericVector lat, const Rcpp::NumericVector year, const Rcpp::NumericVector doy, 
-	bool natural=true) {
+	const Rcpp::NumericVector year, const Rcpp::NumericVector doy, 
+	const Rcpp::NumericVector lat, bool natural=true) {
 
 	std::vector<double> out;
-	size_t n = year.size();
-	out.reserve(tas.size());
+	size_t n = lat.size();
+	size_t rs = n * year.size();
+	out.reserve(rs);
 	for (size_t i=0; i<n; i++) {
-		std::vector<double> x = Tnwb1(tas(Rcpp::_, i), hurs(Rcpp::_, i), wind(Rcpp::_, i), srad(Rcpp::_, i),year, doy, lat(i), natural); 
+		std::vector<double> x = Tnwb1(tas(i, Rcpp::_), hurs(i, Rcpp::_), wind(i, Rcpp::_), srad(i, Rcpp::_),year, doy, lat(i), natural); 
 		out.insert(out.end(), x.begin(), x.end());
 	}
 	return out;

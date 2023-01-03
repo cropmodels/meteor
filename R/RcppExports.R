@@ -29,8 +29,8 @@ bcppvars <- function(prec, tmin, tmax) {
     .Call(`_meteor_Tnwb1`, tas, hurs, wind, srad, year, doy, lat, natural)
 }
 
-.Tnwb2 <- function(tas, hurs, wind, srad, lat, year, doy, natural = TRUE) {
-    .Call(`_meteor_Tnwb2`, tas, hurs, wind, srad, lat, year, doy, natural)
+.Tnwb2 <- function(tas, hurs, wind, srad, year, doy, lat, natural = TRUE) {
+    .Call(`_meteor_Tnwb2`, tas, hurs, wind, srad, year, doy, lat, natural)
 }
 
 .markov_rain <- function(rain, rainydays, years, markov, seed) {
