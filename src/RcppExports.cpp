@@ -94,8 +94,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // Tnwb1
-std::vector<double> Tnwb1(const Rcpp::NumericVector tas, const Rcpp::NumericVector hurs, const Rcpp::NumericVector wind, const Rcpp::NumericVector srad, Rcpp::NumericVector year, Rcpp::NumericVector doy, double lat, bool natural);
-RcppExport SEXP _meteor_Tnwb1(SEXP tasSEXP, SEXP hursSEXP, SEXP windSEXP, SEXP sradSEXP, SEXP yearSEXP, SEXP doySEXP, SEXP latSEXP, SEXP naturalSEXP) {
+std::vector<double> Tnwb1(const Rcpp::NumericVector tas, const Rcpp::NumericVector hurs, const Rcpp::NumericVector wind, const Rcpp::NumericVector srad, const Rcpp::NumericVector year, const Rcpp::NumericVector doy, const double& lat, const bool& kelvin, const bool& natural);
+RcppExport SEXP _meteor_Tnwb1(SEXP tasSEXP, SEXP hursSEXP, SEXP windSEXP, SEXP sradSEXP, SEXP yearSEXP, SEXP doySEXP, SEXP latSEXP, SEXP kelvinSEXP, SEXP naturalSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -103,17 +103,18 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const Rcpp::NumericVector >::type hurs(hursSEXP);
     Rcpp::traits::input_parameter< const Rcpp::NumericVector >::type wind(windSEXP);
     Rcpp::traits::input_parameter< const Rcpp::NumericVector >::type srad(sradSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type year(yearSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type doy(doySEXP);
-    Rcpp::traits::input_parameter< double >::type lat(latSEXP);
-    Rcpp::traits::input_parameter< bool >::type natural(naturalSEXP);
-    rcpp_result_gen = Rcpp::wrap(Tnwb1(tas, hurs, wind, srad, year, doy, lat, natural));
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector >::type year(yearSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector >::type doy(doySEXP);
+    Rcpp::traits::input_parameter< const double& >::type lat(latSEXP);
+    Rcpp::traits::input_parameter< const bool& >::type kelvin(kelvinSEXP);
+    Rcpp::traits::input_parameter< const bool& >::type natural(naturalSEXP);
+    rcpp_result_gen = Rcpp::wrap(Tnwb1(tas, hurs, wind, srad, year, doy, lat, kelvin, natural));
     return rcpp_result_gen;
 END_RCPP
 }
 // Tnwb2
-std::vector<double> Tnwb2(const Rcpp::NumericMatrix tas, const Rcpp::NumericMatrix hurs, const Rcpp::NumericMatrix wind, const Rcpp::NumericMatrix srad, const Rcpp::NumericVector year, const Rcpp::NumericVector doy, const Rcpp::NumericVector lat, bool natural);
-RcppExport SEXP _meteor_Tnwb2(SEXP tasSEXP, SEXP hursSEXP, SEXP windSEXP, SEXP sradSEXP, SEXP yearSEXP, SEXP doySEXP, SEXP latSEXP, SEXP naturalSEXP) {
+std::vector<double> Tnwb2(const Rcpp::NumericMatrix tas, const Rcpp::NumericMatrix hurs, const Rcpp::NumericMatrix wind, const Rcpp::NumericMatrix srad, const Rcpp::NumericVector year, const Rcpp::NumericVector doy, const Rcpp::NumericVector lat, const bool kelvin, const bool natural);
+RcppExport SEXP _meteor_Tnwb2(SEXP tasSEXP, SEXP hursSEXP, SEXP windSEXP, SEXP sradSEXP, SEXP yearSEXP, SEXP doySEXP, SEXP latSEXP, SEXP kelvinSEXP, SEXP naturalSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -124,8 +125,9 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const Rcpp::NumericVector >::type year(yearSEXP);
     Rcpp::traits::input_parameter< const Rcpp::NumericVector >::type doy(doySEXP);
     Rcpp::traits::input_parameter< const Rcpp::NumericVector >::type lat(latSEXP);
-    Rcpp::traits::input_parameter< bool >::type natural(naturalSEXP);
-    rcpp_result_gen = Rcpp::wrap(Tnwb2(tas, hurs, wind, srad, year, doy, lat, natural));
+    Rcpp::traits::input_parameter< const bool >::type kelvin(kelvinSEXP);
+    Rcpp::traits::input_parameter< const bool >::type natural(naturalSEXP);
+    rcpp_result_gen = Rcpp::wrap(Tnwb2(tas, hurs, wind, srad, year, doy, lat, kelvin, natural));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -334,8 +336,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_meteor_pwc_wbgt", (DL_FUNC) &_meteor_pwc_wbgt, 1},
     {"_meteor_Tg1", (DL_FUNC) &_meteor_Tg1, 7},
     {"_meteor_Tg2", (DL_FUNC) &_meteor_Tg2, 7},
-    {"_meteor_Tnwb1", (DL_FUNC) &_meteor_Tnwb1, 8},
-    {"_meteor_Tnwb2", (DL_FUNC) &_meteor_Tnwb2, 8},
+    {"_meteor_Tnwb1", (DL_FUNC) &_meteor_Tnwb1, 9},
+    {"_meteor_Tnwb2", (DL_FUNC) &_meteor_Tnwb2, 9},
     {"_meteor_markov_rain", (DL_FUNC) &_meteor_markov_rain, 5},
     {"_meteor_hourlyFromDailyTemp", (DL_FUNC) &_meteor_hourlyFromDailyTemp, 4},
     {"_meteor_hourlyFromDailyRH", (DL_FUNC) &_meteor_hourlyFromDailyRH, 5},

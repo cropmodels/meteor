@@ -337,7 +337,7 @@ std::vector<double> Tg2(Rcpp::NumericMatrix tas, Rcpp::NumericMatrix hurs,
 // [[Rcpp::export(name = ".Tnwb1")]]
 std::vector<double> Tnwb1(const Rcpp::NumericVector tas, const Rcpp::NumericVector hurs,
      const Rcpp::NumericVector wind, const Rcpp::NumericVector srad, 
-	 Rcpp::NumericVector year, Rcpp::NumericVector doy, double lat, bool natural=true) {
+	 const Rcpp::NumericVector year, const Rcpp::NumericVector doy, const double &lat, const bool &kelvin=false,const bool &natural=true) {
 	
 	const double tolerance=0.1;
 	std::vector<double> out;
@@ -352,23 +352,29 @@ std::vector<double> Tnwb1(const Rcpp::NumericVector tas, const Rcpp::NumericVect
 		double radiation = srad[i];
 		double zenith_rad = calZenith(doy[i], year[i], lat);  // zenith is in degrees
 		double relh = hurs[i] * 0.01;
-		double Tair = tas[i] + kVal;
-		double eair = relh * esat(Tair);	
-		double emis_atm_out = emis_atm(Tair, relh);
+		double Tkel = tas[i];
+		double Tcel = tas[i];
+		if (kelvin) {
+			Tkel += kVal;
+		} else {
+			Tcel -= kVal;
+		}
+		double eair = relh * esat(Tkel);	
+		double emis_atm_out = emis_atm(Tkel, relh);
 		
 		//Fix out-of bounds problems with zenith
 		fix_zrad(radiation, zenith_rad);
 		
-		double density = Pair * 100./(Tair * r_air); // 
-		double visc = viscosity(Tair);
+		double density = Pair * 100./(Tkel * r_air); // 
+		double visc = viscosity(Tkel);
 	
-		double Tnwb = optim_Tnwb(Tair, hurs[i], wind[i], radiation, zenith_rad, visc, emis_atm_out, eair, density, tolerance);
+		double Tnwb = optim_Tnwb(Tkel, hurs[i], wind[i], radiation, zenith_rad, visc, emis_atm_out, eair, density, tolerance);
 		
 		if (natural) {
 			out.push_back(Tnwb);    
 		} else {
-			double Tg = optim_Tg(Tair, hurs[i], wind[i], radiation, zenith_rad, visc, emis_atm_out, tolerance);
-			double wbgt = 0.7 * Tnwb + 0.2 * Tg + 0.1 * tas[i];
+			double Tg = optim_Tg(Tkel, hurs[i], wind[i], radiation, zenith_rad, visc, emis_atm_out, tolerance);
+			double wbgt = 0.7 * Tnwb + 0.2 * Tg + 0.1 * Tcel;
 			out.push_back(wbgt);    
 		}		
 	}
@@ -380,14 +386,14 @@ std::vector<double> Tnwb1(const Rcpp::NumericVector tas, const Rcpp::NumericVect
 std::vector<double> Tnwb2(const Rcpp::NumericMatrix tas, const Rcpp::NumericMatrix hurs,
     const Rcpp::NumericMatrix wind, const Rcpp::NumericMatrix srad, 
 	const Rcpp::NumericVector year, const Rcpp::NumericVector doy, 
-	const Rcpp::NumericVector lat, bool natural=true) {
+	const Rcpp::NumericVector lat, const bool kelvin=false, const bool natural=true) {
 
 	std::vector<double> out;
 	size_t n = lat.size();
 	size_t rs = n * year.size();
 	out.reserve(rs);
 	for (size_t i=0; i<n; i++) {
-		std::vector<double> x = Tnwb1(tas(i, Rcpp::_), hurs(i, Rcpp::_), wind(i, Rcpp::_), srad(i, Rcpp::_),year, doy, lat(i), natural); 
+		std::vector<double> x = Tnwb1(tas(i, Rcpp::_), hurs(i, Rcpp::_), wind(i, Rcpp::_), srad(i, Rcpp::_),year, doy, lat(i), kelvin, natural); 
 		out.insert(out.end(), x.begin(), x.end());
 	}
 	return out;

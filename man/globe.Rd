@@ -12,22 +12,23 @@
 \alias{WBGT,data.frame-method}
 \alias{WBGT,SpatRasterDataset-method}
 
-
-\title{globe temperature}
+\title{Globe temperature}
 
 \description{
-Globe temperature for either a \code{data.frame} or a \code{SpatRasterDataset}. These must have variables "temp" (C), "rhum" (\%), "wind" (m s-1), and "srad" (J s-1 m-2). The \code{data.frame} must also have a variable "date".
+Globe temperatures (Tg, Tnwb, WBGT). 
+
+The can be computed for either a \code{data.frame} or a \code{SpatRasterDataset}. These must have variables "temp" (C), "rhum" (\%), "wind" (m s-1), and "srad" (J s-1 m-2). The \code{data.frame} must also have a variable "date".
 }
 
 \usage{
 \S4method{Tg}{data.frame}(x, latitude)
 \S4method{Tg}{SpatRasterDataset}(x, filename="", overwrite=FALSE, ...)
 
-\S4method{Tnwb}{data.frame}(x, latitude)
-\S4method{Tnwb}{SpatRasterDataset}(x, filename="", overwrite=FALSE, ...)
+\S4method{Tnwb}{data.frame}(x, latitude, kelvin=FALSE)
+\S4method{Tnwb}{SpatRasterDataset}(x, kelvin=FALSE, filename="", overwrite=FALSE, ...)
 
-\S4method{WBGT}{data.frame}(x, latitude)
-\S4method{WBGT}{SpatRasterDataset}(x, filename="", overwrite=FALSE, ...)
+\S4method{WBGT}{data.frame}(x, latitude, kelvin=FALSE)
+\S4method{WBGT}{SpatRasterDataset}(x, kelvin=FALSE, filename="", overwrite=FALSE, ...)
 }
 
 
@@ -37,6 +38,7 @@ Globe temperature for either a \code{data.frame} or a \code{SpatRasterDataset}. 
   \item{filename}{character. Output filename}
   \item{overwrite}{logical. If \code{TRUE}, \code{filename} is overwritten}  
   \item{...}{additional arguments for writing files as in \code{\link[terra]{writeRaster}}}    
+  \item{kelvin}{logical. Set to \code{TRUE} of the units of temperature are in Kelvin}
 }
 
 \value{

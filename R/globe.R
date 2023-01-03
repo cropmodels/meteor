@@ -51,19 +51,19 @@ setMethod("Tg", signature(x="SpatRasterDataset"),
 
 
 setMethod("Tnwb", signature(x="data.frame"),
-	function(x, latitude) {
+	function(x, latitude, kelvin=FALSE) {
 		if (!all(c("temp", "rhum", "wind", "srad", "date") %in% names(x))) {
 			stop("x must have variables 'temp', 'rhum', 'wind', 'srad', and 'date'")		
 		}
 		year <- fromDate(x$date, "year")
 		doy <- fromDate(x$date, "doy")
-		.Tnwb1(x$temp, x$rhum, x$wind, x$srad, year, doy, latitude, TRUE)
+		.Tnwb1(x$temp, x$rhum, x$wind, x$srad, year, doy, latitude, kelvin, TRUE)
 	}
 )
 
 
 setMethod("Tnwb", signature(x="SpatRasterDataset"),
-	function(x, filename="", overwrite=FALSE, ...) {
+	function(x, kelvin=FALSE, filename="", overwrite=FALSE, ...) {
 		if (!all(c("temp", "rhum", "wind", "srad") %in% names(x))) {
 			stop("x must have variables 'temp', 'rhum', 'wind', 'srad'")		
 		}
@@ -87,7 +87,7 @@ setMethod("Tnwb", signature(x="SpatRasterDataset"),
 			c1 <- (b$row[i]-1) * nc + 1 
 			c2 <- (b$row[i]+b$nrows[i]-1) * nc 
 			lat <- terra::yFromCell(r, c1:c2)
-			tnwb <- .Tnwb2(temp, rhum, wind, srad, year, doy, lat, TRUE)
+			tnwb <- .Tnwb2(temp, rhum, wind, srad, year, doy, lat, kelvin, TRUE)
 			tnwb <- as.vector(matrix(tnwb, ncol=ncol(temp), nrow=nrow(temp), byrow=TRUE))
 			terra::writeValues(out, tnwb, b$row[i], b$nrows[i])
 		}
@@ -97,19 +97,19 @@ setMethod("Tnwb", signature(x="SpatRasterDataset"),
 
 
 setMethod("WBGT", signature(x="data.frame"),
-	function(x, latitude) {
+	function(x, latitude, kelvin=FALSE) {
 		if (!all(c("temp", "rhum", "wind", "srad", "date") %in% names(x))) {
 			stop("x must have variables 'temp', 'rhum', 'wind', 'srad', and 'date'")		
 		}
 		year <- fromDate(x$date, "year")
 		doy <- fromDate(x$date, "doy")
-		.Tnwb1(x$temp, x$rhum, x$wind, x$srad, year, doy, latitude, FALSE)
+		.Tnwb1(x$temp, x$rhum, x$wind, x$srad, year, doy, latitude, kelvin, FALSE)
 	}
 )
 
 
 setMethod("WBGT", signature(x="SpatRasterDataset"),
-	function(x, filename="", overwrite=FALSE, ...) {
+	function(x, kelvin=FALSE, filename="", overwrite=FALSE, ...) {
 		if (!all(c("temp", "rhum", "wind", "srad") %in% names(x))) {
 			stop("x must have variables 'temp', 'rhum', 'wind', 'srad'")		
 		}
@@ -133,7 +133,7 @@ setMethod("WBGT", signature(x="SpatRasterDataset"),
 			c1 <- (b$row[i]-1) * nc + 1 
 			c2 <- (b$row[i]+b$nrows[i]-1) * nc 
 			lat <- terra::yFromCell(r, c1:c2)
-			tnwb <- .Tnwb2(temp, rhum, wind, srad, lat, year, doy, lat, FALSE)
+			tnwb <- .Tnwb2(temp, rhum, wind, srad, year, doy, lat, kelvin, FALSE)
 			tnwb <- as.vector(matrix(tnwb, ncol=ncol(temp), nrow=nrow(temp), byrow=TRUE))
 			terra::writeValues(out, tnwb, b$row[i], b$nrows[i])
 		}
