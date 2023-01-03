@@ -35,7 +35,7 @@ setMethod("photoperiod", signature(x="SpatRaster"),
 		if (all(is.na(d))) {
 			stop("the layers in x have no time stamps")
 		}
-		r <- terra::rast(x)[[1]]
+		r <- terra::rast(x)
 		if (!terra::is.lonlat(x)) {
 			lat <- terra::as.points(r, values=FALSE, na.rm=FALSE)
 			lat <- terra::project(lat, crs="+proj=longlat")
@@ -52,7 +52,6 @@ setMethod("photoperiod", signature(x="SpatRaster"),
 			terra::ext(r) <- terra::ext(x)
 			lat <- terra::yFromRow(r, 1:nrow(r))
 			dd <- data.frame(latitude=rep(lat, length(d)), date=rep(d, each=length(lat)))
-			r <- terra::rast(x)
 			terra::values(r) <- photoperiod(dd)
 			terra::disagg(r, c(1, ncol(x)), filename=filename, overwrite=overwrite, ...)
 		}		
