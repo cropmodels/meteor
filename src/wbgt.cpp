@@ -342,6 +342,11 @@ std::vector<double> Tnwb1(const Rcpp::NumericVector tas, const Rcpp::NumericVect
 	const double tolerance=0.1;
 	std::vector<double> out;
 	size_t ds = doy.size();
+	if ((lat < -90) || (lat > 90)) {
+		Rcpp::Rcout << "latitude should be inbetween -90 and 90" << std::endl;
+		out.resize(ds, NAN);
+		return(out);
+	}
 	out.reserve(ds);
 
 	for (size_t i=0; i<ds; i++) {
@@ -352,13 +357,15 @@ std::vector<double> Tnwb1(const Rcpp::NumericVector tas, const Rcpp::NumericVect
 		double radiation = srad[i];
 		double zenith_rad = calZenith(doy[i], year[i], lat);  // zenith is in degrees
 		double relh = hurs[i] * 0.01;
-		double Tkel = tas[i];
-		double Tcel = tas[i];
+		double Tkel, Tcel;
 		if (kelvin) {
-			Tcel -= kVal;
+			Tkel = tas[i];
+			Tcel = tas[i] - kVal;
 		} else {
-			Tkel += kVal;
+			Tkel = tas[i] + kVal;
+			Tcel = tas[i];
 		}
+		
 		double eair = relh * esat(Tkel);	
 		double emis_atm_out = emis_atm(Tkel, relh);
 		
