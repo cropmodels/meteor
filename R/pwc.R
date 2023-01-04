@@ -7,7 +7,7 @@ if (!isGeneric("utci")) {setGeneric("utci", function(x, ...) standardGeneric("ut
 
 setMethod("pwc", signature(x="numeric"),
 	function(x, input="wbgt") {
-		input = match.arg(tolower(input), c("wbgt", "utci"))
+		input <- match.arg(tolower(input), c("wbgt", "utci"))		
 		if (input == "wbgt") {
 			.pwc_wbgt(x)
 		} else {
@@ -18,12 +18,25 @@ setMethod("pwc", signature(x="numeric"),
 
 setMethod("pwc", signature(x="SpatRaster"),
 	function(x, input="wbgt", filename="", overwrite=FALSE, ...) {
-		input = match.arg(tolower(input), c("wbgt", "utci"))
+		input <- match.arg(tolower(input), c("wbgt", "utci"))		
+		out <- terra::rast(x)
+		terra::readStart(x)
+		on.exit(terra::readStop(x))
+		b <- terra::writeStart(out, filename, overwrite, wopt=list(...), n=5, sources=terra::sources(x))
 		if (input == "wbgt") {
-			terra::app(x, .pwc_wbgt, filename=filename, overwrite=overwrite, wopt=list(...))
+			for (i in 1:b$n) {
+				v <- terra::readValues(x, b$row[i], b$nrows[i], mat=TRUE)
+				v <- .pwc_wbgt(v)			
+				terra::writeValues(out, v, b$row[i], b$nrows[i])
+			}
 		} else {
-			terra::app(x, .pwc_utci, filename=filename, overwrite=overwrite, wopt=list(...))
+			for (i in 1:b$n) {
+				v <- terra::readValues(x, b$row[i], b$nrows[i], mat=TRUE)
+				v <- .pwc_ucti(v)			
+				terra::writeValues(out, v, b$row[i], b$nrows[i])
+			}
 		}
+		terra::writeStop(out)	
 	}
 )
 

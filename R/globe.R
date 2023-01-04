@@ -120,11 +120,16 @@ setMethod("WBGT", signature(x="SpatRasterDataset"),
 		year <- fromDate(date, "year")
 		doy <- fromDate(date, "doy")
 		r <- terra::rast(x$temp)
+		stopifnot(terra::is.lonlat(r))
 		nc <- ncol(r)
 		out <- terra::rast(r)
+		wopt <- list(...)
+		if (is.null(wopt(...)$names)) {
+			wopt$names <- paste("wbgt_", 1:nlyr(out))
+		}
 		terra::readStart(x)
 		on.exit(terra::readStop(x))
-		b <- terra::writeStart(out, filename, overwrite, wopt=list(...), n=5, sources=terra::sources(x))
+		b <- terra::writeStart(out, filename, overwrite, wopt=wopt, n=5, sources=terra::sources(x))
 		for (i in 1:b$n) {
 			temp <- terra::readValues(x$temp, b$row[i], b$nrows[i], 1, nc, mat=TRUE)
 			rhum <- terra::readValues(x$rhum, b$row[i], b$nrows[i], 1, nc, mat=TRUE)

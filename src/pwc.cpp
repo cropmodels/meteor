@@ -289,7 +289,6 @@ std::vector<double> pwc_utci(const std::vector<double>& utci) {
 // [[Rcpp::export(name = ".pwc_wbgt")]]
 std::vector<double> pwc_wbgt(const std::vector<double>& wbgt) {
 
-	const double hn = 6.;
 	const double level1 = 12.6;
 	const double level2 = 29.4;
 	const double level3 = 33.4;
@@ -302,17 +301,27 @@ std::vector<double> pwc_wbgt(const std::vector<double>& wbgt) {
 	size_t n = wbgt.size();
 	std::vector<double> out;
 	out.reserve(n);
+
+//	const double hn = 6.;
 	
 	for (size_t i=0; i<n; i++) {
+		if ((std::isnan(wbgt[i])) || (wbgt[i] < 2)) {
+			out.push_back(NAN);
+			continue;			
+		}
 		double pwc = 100. / (1. + pow(33.63 / wbgt[i], -6.33));	  
 		if (wbgt[i] >= level4) {
-			pwc -=  2. * hn + 4.86;
+//			pwc -=  2. * hn + 4.86;
+			pwc -= 16.86;
 		} else if (wbgt[i] >= level3) {
-			pwc += ((wbgt[i] - level3)/l4minusl3) * (-(2.   * hn + 4.86)) + (-1. * (wbgt[i] - level4)/l4minusl3) * (-(1.1 * hn + 0.98));
+//			pwc += ((wbgt[i] - level3)/l4minusl3) * (-(2.* hn + 4.86)) + (-1. * (wbgt[i] - level4)/l4minusl3) * (-(1.1 * hn + 0.98));
+			pwc += ((wbgt[i] - level3)/l4minusl3) * -16.86 + ((wbgt[i] - level4)/l4minusl3) * 7.58;
 		} else if (wbgt[i] >= level2) {
-			pwc += ((wbgt[i] - level2)/l3minusl2) * (-(1.1 * hn + 0.98)) + (-1. * (wbgt[i] - level3)/l3minusl2) * (-(0.65 * hn + 1.3));
+//			pwc += ((wbgt[i] - level2)/l3minusl2) * (-(1.1 * hn + 0.98)) + (-1. * (wbgt[i] - level3)/l3minusl2) * (-(0.65 * hn + 1.3));
+			pwc += ((wbgt[i] - level2)/l3minusl2) * -7.58 + ((wbgt[i] - level3)/l3minusl2) * 5.2;
 		} else if (wbgt[i] > level1) {
-			pwc += ((wbgt[i] - level1)/l2minusl1) * (-(0.65 * hn + 1.3));
+//			pwc += ((wbgt[i] - level1)/l2minusl1) * (-(0.65 * hn + 1.3));
+			pwc += ((wbgt[i] - level1)/l2minusl1) *  -5.2;
 		}
 		out.push_back(pwc);
 	}
