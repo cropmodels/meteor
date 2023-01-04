@@ -124,7 +124,7 @@ setMethod("WBGT", signature(x="SpatRasterDataset"),
 		out <- terra::rast(r)
 		wopt <- list(...)
 		if (is.null(wopt$names)) {
-			wopt$names <- paste("wbgt_", 1:nlyr(out))
+			wopt$names <- paste0("wbgt_", 1:nlyr(out))
 		}
 		if (!is.null(mask)) {
 			if (nlyr(mask) > 1) {
