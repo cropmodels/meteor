@@ -305,8 +305,12 @@ std::vector<double> pwc_wbgt(const std::vector<double>& wbgt) {
 //	const double hn = 6.;
 	
 	for (size_t i=0; i<n; i++) {
-		if ((std::isnan(wbgt[i])) || (wbgt[i] < 2)) {
+		if (std::isnan(wbgt[i])) {
 			out.push_back(NAN);
+			continue;			
+		}
+		if (wbgt[i] <= 10) {
+			out.push_back(100.);
 			continue;			
 		}
 		double pwc = 100. / (1. + pow(33.63 / wbgt[i], -6.33));	  
