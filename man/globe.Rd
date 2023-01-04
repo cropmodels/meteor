@@ -28,7 +28,7 @@ The can be computed for either a \code{data.frame} or a \code{SpatRasterDataset}
 \S4method{Tnwb}{SpatRasterDataset}(x, kelvin=FALSE, filename="", overwrite=FALSE, ...)
 
 \S4method{WBGT}{data.frame}(x, latitude, kelvin=FALSE)
-\S4method{WBGT}{SpatRasterDataset}(x, kelvin=FALSE, filename="", overwrite=FALSE, ...)
+\S4method{WBGT}{SpatRasterDataset}(x, kelvin=FALSE, mask=NULL, filename="", overwrite=FALSE, ...)
 }
 
 
@@ -39,6 +39,7 @@ The can be computed for either a \code{data.frame} or a \code{SpatRasterDataset}
   \item{overwrite}{logical. If \code{TRUE}, \code{filename} is overwritten}  
   \item{...}{additional arguments for writing files as in \code{\link[terra]{writeRaster}}}    
   \item{kelvin}{logical. Set to \code{TRUE} of the units of temperature are in Kelvin}
+  \item{mask}{NULL of SpatRaster. if a SpatRaster is used, it should have one layer. No computations are done for cells that are NA, and these are set to NA in the output}
 }
 
 \value{

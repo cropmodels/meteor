@@ -109,7 +109,7 @@ setMethod("WBGT", signature(x="data.frame"),
 
 
 setMethod("WBGT", signature(x="SpatRasterDataset"),
-	function(x, kelvin=FALSE, filename="", overwrite=FALSE, ...) {
+	function(x, kelvin=FALSE, mask=NULL, filename="", overwrite=FALSE, ...) {
 		if (!all(c("temp", "rhum", "wind", "srad") %in% names(x))) {
 			stop("x must have variables 'temp', 'rhum', 'wind', 'srad'")		
 		}
@@ -121,26 +121,42 @@ setMethod("WBGT", signature(x="SpatRasterDataset"),
 		doy <- fromDate(date, "doy")
 		r <- terra::rast(x$temp)
 		stopifnot(terra::is.lonlat(r))
-		nc <- ncol(r)
 		out <- terra::rast(r)
 		wopt <- list(...)
-		if (is.null(wopt(...)$names)) {
+		if (is.null(wopt$names)) {
 			wopt$names <- paste("wbgt_", 1:nlyr(out))
 		}
+		if (!is.null(mask)) {
+			if (nlyr(mask) > 1) {
+				stop("mask should have a single layer")			
+			}
+			if (!compareGeom(out, mask)) {
+				stop("the geometry of mask does not match the geometry of x")
+			}
+			terra::readStart(mask)
+		}
+		nc <- ncol(r)
 		terra::readStart(x)
 		on.exit(terra::readStop(x))
 		b <- terra::writeStart(out, filename, overwrite, wopt=wopt, n=5, sources=terra::sources(x))
 		for (i in 1:b$n) {
-			temp <- terra::readValues(x$temp, b$row[i], b$nrows[i], 1, nc, mat=TRUE)
-			rhum <- terra::readValues(x$rhum, b$row[i], b$nrows[i], 1, nc, mat=TRUE)
-			srad <- terra::readValues(x$srad, b$row[i], b$nrows[i], 1, nc, mat=TRUE)
-			wind <- terra::readValues(x$wind, b$row[i], b$nrows[i], 1, nc, mat=TRUE)
+			temp <- terra::readValues(x$temp, b$row[i], b$nrows[i], mat=TRUE)
+			rhum <- terra::readValues(x$rhum, b$row[i], b$nrows[i], mat=TRUE)
+			srad <- terra::readValues(x$srad, b$row[i], b$nrows[i], mat=TRUE)
+			wind <- terra::readValues(x$wind, b$row[i], b$nrows[i], mat=TRUE)
 			c1 <- (b$row[i]-1) * nc + 1 
 			c2 <- (b$row[i]+b$nrows[i]-1) * nc 
 			lat <- terra::yFromCell(r, c1:c2)
+			if (!is.null(mask)) {
+				m <- terra::readValues(mask, b$row[i], b$nrows[i], mat=TRUE)
+				temp[is.na(m), ] <- NA 
+			}
 			tnwb <- .Tnwb2(temp, rhum, wind, srad, year, doy, lat, kelvin, FALSE)
 			tnwb <- as.vector(matrix(tnwb, ncol=ncol(temp), nrow=nrow(temp), byrow=TRUE))
 			terra::writeValues(out, tnwb, b$row[i], b$nrows[i])
+		}
+		if (!is.null(mask)) {
+			terra::readStop(mask)
 		}
 		terra::writeStop(out)
 	}

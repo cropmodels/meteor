@@ -313,6 +313,7 @@ std::vector<double> pwc_wbgt(const std::vector<double>& wbgt) {
 		if (wbgt[i] >= level4) {
 //			pwc -=  2. * hn + 4.86;
 			pwc -= 16.86;
+			pwc = pwc < 0 ? 0 : pwc; 
 		} else if (wbgt[i] >= level3) {
 //			pwc += ((wbgt[i] - level3)/l4minusl3) * (-(2.* hn + 4.86)) + (-1. * (wbgt[i] - level4)/l4minusl3) * (-(1.1 * hn + 0.98));
 			pwc += ((wbgt[i] - level3)/l4minusl3) * -16.86 + ((wbgt[i] - level4)/l4minusl3) * 7.58;
@@ -323,6 +324,7 @@ std::vector<double> pwc_wbgt(const std::vector<double>& wbgt) {
 //			pwc += ((wbgt[i] - level1)/l2minusl1) * (-(0.65 * hn + 1.3));
 			pwc += ((wbgt[i] - level1)/l2minusl1) *  -5.2;
 		}
+		pwc = std::round(pwc*10) / 10;
 		out.push_back(pwc);
 	}
 	return out;
