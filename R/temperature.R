@@ -16,6 +16,12 @@ hourlyFromDailyRelh <- function(relh, tmin, tmax, doy, latitude) {
 
 
 
+dayTemp <- function(tmin, tmax, doy, latitude) {
+	d <- cbind(tmin, tmax, doy, latitude)
+    .Call('_meteor_daytimeTemperature', PACKAGE = 'meteor', d[,1], d[,2], d[,3], d[,4])
+}
+
+
 ...diurnalTemp <- function(lat, date, tmin, tmax) {
 	TC <- 4.0
     P <- 1.5

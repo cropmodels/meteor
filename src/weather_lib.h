@@ -749,23 +749,23 @@ std::vector<double> dailyToHourlyTemperature(double tmin, double tmax, int doy, 
     double P = 1.5;
 	double pi = 3.141592653589793238462643383279502884197169399375;
 	double daylength = photoperiod(doy, latitude);
-	double nigthlength = 24 - daylength;
+	double nightlength = 24 - daylength;
     double sunrise = 12 - 0.5 * daylength;
     double sunset = 12 + 0.5 * daylength;
 	std::vector<double> tmp(24);
-	double tsunst;
 
+	double tdif = (tmax-tmin);
 	for (int h = 0; h < 24; h++) {
 		if ( h < sunrise)  {  // midnight to sunrise;
-			tsunst = tmin + (tmax-tmin) * sin(pi * (daylength/(daylength + 2 * P)));
-			tmp[h] = (tmin - tsunst * exp(-nigthlength/TC) + (tsunst-tmin) * exp(-(h + 24-sunset)/TC)) / (1-exp(-nigthlength/TC));
+			double tsunst = tmin + tdif * sin(pi * (daylength/(daylength + 2 * P)));
+			tmp[h] = (tmin - tsunst * exp(-nightlength/TC) + (tsunst-tmin) * exp(-(h + 24-sunset)/TC)) / (1-exp(-nightlength/TC));
 		} else if ( h < (12+P) ) { // between sunrise and time that tmax is reached
-			tmp[h] = tmin + (tmax-tmin) * sin(pi * (h - sunrise)/(daylength + 2 * P));
+			tmp[h] = tmin + tdif * sin(pi * (h - sunrise)/(daylength + 2 * P));
 		} else if (h < sunset) { 	// between time of tmax and sunset;
-			tmp[h] = tmin + (tmax-tmin) * sin(pi * (h - sunrise)/(daylength + 2 * P));
+			tmp[h] = tmin + tdif * sin(pi * (h - sunrise)/(daylength + 2 * P));
 		} else { // sunset to midnight;
-			tsunst = tmin + (tmax - tmin) * sin(pi * (daylength/(daylength + 2 * P)));
-			tmp[h] = (tmin - tsunst * exp(-nigthlength / TC) + (tsunst-tmin) * exp(-(h - sunset)/TC)) / (1-exp(-nigthlength/TC));
+			double tsunst = tmin + tdif * sin(pi * (daylength/(daylength + 2 * P)));
+			tmp[h] = (tmin - tsunst * exp(-nightlength / TC) + (tsunst-tmin) * exp(-(h - sunset)/TC)) / (1-exp(-nightlength/TC));
 		}
 	}
 	return(tmp);
@@ -785,4 +785,27 @@ std::vector<double> dailyToHourlyRelhum(double relh, double tmin, double tmax, i
 
 
 
+
+double dayTemperature(double tmin, double tmax, int doy, double latitude) {
+	double pi = 3.141592653589793238462643383279502884197169399375;
+	double daylength = photoperiod(doy, latitude);
+    double sunrise = 12 - 0.5 * daylength;
+    double sunset = 12 + 0.5 * daylength;
+	double tmp = 0;
+	double hrs = 0;
+	double tdif = (tmax-tmin);
+	int start = round(sunrise);
+	int end = round(sunset);
+	daylength += 3;
+	for (int h=start; h<end; h++) {
+		if (h < 14) { // between sunrise and time that tmax is reached
+			tmp += tmin + tdif * sin(pi * (h - sunrise)/daylength);
+			hrs++;
+		} else { 	// between time of tmax and sunset;
+			tmp += tmin + tdif * sin(pi * (h - sunrise)/daylength);
+			hrs++;
+		} 
+	}
+	return(tmp / hrs);
+}
 

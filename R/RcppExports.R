@@ -9,12 +9,12 @@ bcppvars <- function(prec, tmin, tmax) {
     .Call(`_meteor_v_utci`, ta, tg, va, hurs)
 }
 
-.pwc_utci <- function(utci) {
-    .Call(`_meteor_pwc_utci`, utci)
+.pwc_utci <- function(utci, adjust) {
+    .Call(`_meteor_pwc_utci`, utci, adjust)
 }
 
-.pwc_wbgt <- function(wbgt) {
-    .Call(`_meteor_pwc_wbgt`, wbgt)
+.pwc_wbgt <- function(wbgt, adjust) {
+    .Call(`_meteor_pwc_wbgt`, wbgt, adjust)
 }
 
 .Tg1 <- function(tas, hurs, wind, srad, year, doy, lat) {
@@ -43,6 +43,10 @@ bcppvars <- function(prec, tmin, tmax) {
 
 .hourlyFromDailyRH <- function(relh, tmin, tmax, doy, latitude) {
     .Call(`_meteor_hourlyFromDailyRH`, relh, tmin, tmax, doy, latitude)
+}
+
+.daytimeTemperature <- function(tmin, tmax, doy, latitude) {
+    .Call(`_meteor_daytimeTemperature`, tmin, tmax, doy, latitude)
 }
 
 .Photoperiod <- function(doy, latitude) {

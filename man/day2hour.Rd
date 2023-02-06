@@ -1,4 +1,4 @@
-\name{daylyToHourly}
+\name{dailyToHourly}
 
 \alias{hourlyFromDailyTemp}
 \alias{hourlyFromDailyRelh}
@@ -20,10 +20,10 @@ hourlyFromDailyRelh(relh, tmin, tmax, doy, latitude)
 
 
 \arguments{
-  \item{tmin}{numeric. minimum temperature (C)}
-  \item{tmax}{numeric. maximum temperature (C)}
+  \item{tmin}{numeric. minimum temperature (must be in C for hourlyFromDailyRelh)}
+  \item{tmax}{numeric. maximum temperature (must be in C for hourlyFromDailyRelh)}
   \item{relh}{relative humidity (percent)}
-  \item{doy}{integer. Day of the year (between 1--365)}
+  \item{doy}{integer. Day of the year (between 1 and 365)}
   \item{latitude}{numeric. Latitude}
 }
 

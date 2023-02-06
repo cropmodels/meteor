@@ -38,24 +38,26 @@ BEGIN_RCPP
 END_RCPP
 }
 // pwc_utci
-std::vector<double> pwc_utci(const std::vector<double>& utci);
-RcppExport SEXP _meteor_pwc_utci(SEXP utciSEXP) {
+std::vector<double> pwc_utci(const std::vector<double>& utci, const bool adjust);
+RcppExport SEXP _meteor_pwc_utci(SEXP utciSEXP, SEXP adjustSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const std::vector<double>& >::type utci(utciSEXP);
-    rcpp_result_gen = Rcpp::wrap(pwc_utci(utci));
+    Rcpp::traits::input_parameter< const bool >::type adjust(adjustSEXP);
+    rcpp_result_gen = Rcpp::wrap(pwc_utci(utci, adjust));
     return rcpp_result_gen;
 END_RCPP
 }
 // pwc_wbgt
-std::vector<double> pwc_wbgt(const std::vector<double>& wbgt);
-RcppExport SEXP _meteor_pwc_wbgt(SEXP wbgtSEXP) {
+std::vector<double> pwc_wbgt(const std::vector<double>& wbgt, const bool adjust);
+RcppExport SEXP _meteor_pwc_wbgt(SEXP wbgtSEXP, SEXP adjustSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const std::vector<double>& >::type wbgt(wbgtSEXP);
-    rcpp_result_gen = Rcpp::wrap(pwc_wbgt(wbgt));
+    Rcpp::traits::input_parameter< const bool >::type adjust(adjustSEXP);
+    rcpp_result_gen = Rcpp::wrap(pwc_wbgt(wbgt, adjust));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -172,6 +174,20 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< NumericVector >::type doy(doySEXP);
     Rcpp::traits::input_parameter< NumericVector >::type latitude(latitudeSEXP);
     rcpp_result_gen = Rcpp::wrap(hourlyFromDailyRH(relh, tmin, tmax, doy, latitude));
+    return rcpp_result_gen;
+END_RCPP
+}
+// daytimeTemperature
+NumericVector daytimeTemperature(NumericVector tmin, NumericVector tmax, NumericVector doy, NumericVector latitude);
+RcppExport SEXP _meteor_daytimeTemperature(SEXP tminSEXP, SEXP tmaxSEXP, SEXP doySEXP, SEXP latitudeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type tmin(tminSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type tmax(tmaxSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type doy(doySEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type latitude(latitudeSEXP);
+    rcpp_result_gen = Rcpp::wrap(daytimeTemperature(tmin, tmax, doy, latitude));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -332,8 +348,8 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_meteor_bcppvars", (DL_FUNC) &_meteor_bcppvars, 3},
     {"_meteor_v_utci", (DL_FUNC) &_meteor_v_utci, 4},
-    {"_meteor_pwc_utci", (DL_FUNC) &_meteor_pwc_utci, 1},
-    {"_meteor_pwc_wbgt", (DL_FUNC) &_meteor_pwc_wbgt, 1},
+    {"_meteor_pwc_utci", (DL_FUNC) &_meteor_pwc_utci, 2},
+    {"_meteor_pwc_wbgt", (DL_FUNC) &_meteor_pwc_wbgt, 2},
     {"_meteor_Tg1", (DL_FUNC) &_meteor_Tg1, 7},
     {"_meteor_Tg2", (DL_FUNC) &_meteor_Tg2, 7},
     {"_meteor_Tnwb1", (DL_FUNC) &_meteor_Tnwb1, 9},
@@ -341,6 +357,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_meteor_markov_rain", (DL_FUNC) &_meteor_markov_rain, 5},
     {"_meteor_hourlyFromDailyTemp", (DL_FUNC) &_meteor_hourlyFromDailyTemp, 4},
     {"_meteor_hourlyFromDailyRH", (DL_FUNC) &_meteor_hourlyFromDailyRH, 5},
+    {"_meteor_daytimeTemperature", (DL_FUNC) &_meteor_daytimeTemperature, 4},
     {"_meteor_Photoperiod", (DL_FUNC) &_meteor_Photoperiod, 2},
     {"_meteor_ET0_ThornthwaiteWilmott", (DL_FUNC) &_meteor_ET0_ThornthwaiteWilmott, 3},
     {"_meteor_ET0_ThornthwaiteWilmottCamargo", (DL_FUNC) &_meteor_ET0_ThornthwaiteWilmottCamargo, 5},

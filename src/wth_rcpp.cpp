@@ -47,7 +47,7 @@ NumericMatrix hourlyFromDailyTemp(NumericVector tmin, NumericVector tmax, Numeri
 // [[Rcpp::export(name =".hourlyFromDailyRH")]]
 NumericMatrix hourlyFromDailyRH(NumericVector relh, NumericVector tmin, NumericVector tmax, NumericVector doy, NumericVector latitude) {
 	NumericMatrix out(tmin.size(), 24);
-  std::vector<double>  d(24);
+	std::vector<double>  d(24);
 	for (int i=0; i < tmin.size(); i++) {
 			d = dailyToHourlyRelhum(relh[i], tmin[i], tmax[i], doy[i], latitude[i]);
 			for (int j = 0; j<24; j++) {
@@ -56,6 +56,16 @@ NumericMatrix hourlyFromDailyRH(NumericVector relh, NumericVector tmin, NumericV
 	}
 	return(out);
 }
+
+// [[Rcpp::export(name =".daytimeTemperature")]]
+NumericVector daytimeTemperature(NumericVector tmin, NumericVector tmax, NumericVector doy, NumericVector latitude) {
+	NumericVector out(tmin.size());
+	for (int i=0; i < tmin.size(); i++) {
+		out[i] = dayTemperature(tmin[i], tmax[i], doy[i], latitude[i]);
+	}
+	return(out);
+}
+
 
 
 // [[Rcpp::export(name =".Photoperiod")]]
