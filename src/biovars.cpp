@@ -53,7 +53,7 @@ std::vector<double> window_mean(std::vector<double> x)  {
 }
 
 
-// [[Rcpp::export]]
+// [[Rcpp::export(name = ".bcppvars")]]
 std::vector<double> bcppvars(std::vector<double> prec, std::vector<double> tmin, std::vector<double> tmax) {
 
 	std::vector<double> p(19);

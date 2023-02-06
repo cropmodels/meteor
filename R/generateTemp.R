@@ -57,12 +57,12 @@
 	
 	res <- list()
 	for (r in 1:reps) {
-		x <- filter(rnorm(m, sd=std[1]), filter=rep(1,autocor), circular=TRUE)
-		y <- filter(runif(m, -0.5*std[1], 0.5*std[1]), filter=rep(1,autocor), circular=TRUE)
+		x <- stats::filter(stats::rnorm(m, sd=std[1]), filter=rep(1,autocor), circular=TRUE)
+		y <- stats::filter(stats::runif(m, -0.5*std[1], 0.5*std[1]), filter=rep(1,autocor), circular=TRUE)
 		tn <- c(tmin[length(tmin)], tmin, tmin[1])
 		tx <- c(tmax[length(tmax)], tmax, tmax[1])
-		tmin <- spline(ds, tn, xout=1:m)$y + x - y
-		tmax <- spline(ds, tx, xout=1:m)$y + x + y
+		tmin <- stats::spline(ds, tn, xout=1:m)$y + x - y
+		tmax <- stats::spline(ds, tx, xout=1:m)$y + x + y
 		res[[r]] <- cbind(tmin,tmax)
 	}
 	res

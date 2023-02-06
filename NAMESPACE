@@ -1,6 +1,4 @@
 useDynLib(meteor, .registration = TRUE)
 import(methods, Rcpp)
-importFrom("stats", "aggregate", "filter", "rgamma", "rnorm", "runif", "spline")
-importFrom("utils", "download.file", "unzip", "head", "tail")
-exportMethods("crop<-", "weather<-", "soil<-", "control<-", "options<-", "parameters<-", "run", "runSpatial")
+exportMethods("crop<-", "weather<-", "soil<-", "control<-", "options<-", "parameters<-", "run")
 exportPattern("^[^\\.\\_]")

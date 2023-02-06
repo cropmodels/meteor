@@ -17,7 +17,7 @@
 	part3 <- paste("&p=", vars, sep='', collapse='')
 	part3 <- paste(part3, "&submit=Submit", sep="")
 	theurl <- paste(part1, part2, part3, sep="")
-	download.file(url=theurl, destfile=filename, method="auto", quiet=TRUE, mode="wb", cacheOK=TRUE)
+	utils::download.file(url=theurl, destfile=filename, method="auto", quiet=TRUE, mode="wb", cacheOK=TRUE)
 	return(filename)
 }
 
@@ -109,9 +109,9 @@
 			tfilename <- paste0(folder, "/tile_", tile, ".zip", sep="")
 			#if (! file.exists(tfilename)) {
 			message(paste('downloading to', folder))
-			download.file(url=theurl, destfile=tfilename, method="auto", quiet=TRUE, mode = "wb")
+			utils::download.file(url=theurl, destfile=tfilename, method="auto", quiet=TRUE, mode = "wb")
 			#}
-			unzip(tfilename, exdir=folder)
+			utils::unzip(tfilename, exdir=folder)
 	}
 	if (file.exists(fname)) {
         readRDS(fname)
@@ -137,7 +137,7 @@
 		source <- tolower(source)
 		if (source == 'davis') {
 			theurl <- paste0("http://biogeo.ucdavis.edu/data/climate/daily/nasapower/", cell, ".rds")
-			download.file(url=theurl, destfile=fname, method="auto", quiet=TRUE, mode="wb", cacheOK=TRUE)
+			utils::download.file(url=theurl, destfile=fname, method="auto", quiet=TRUE, mode="wb", cacheOK=TRUE)
 		} else {
 			tmpfile <- NULL
 			tmpfile <- .downloadNASAPower(lon, lat)

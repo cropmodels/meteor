@@ -20,6 +20,8 @@ dayTemp(tmin, tmax, doy, latitude)
 \arguments{
   \item{tmin}{numeric. minimum temperature (any unit)}
   \item{tmax}{numeric. maximum temperature (any unit)}
+  \item{doy}{integer. Day of the year (between 1 and 365)}
+  \item{latitude}{numeric. Latitude}  
 }
 
 \value{

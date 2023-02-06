@@ -32,7 +32,7 @@ setMethod("pwc", signature(x="SpatRaster"),
 		} else {
 			for (i in 1:b$n) {
 				v <- terra::readValues(x, b$row[i], b$nrows[i], mat=TRUE)
-				v <- .pwc_ucti(v, adjust)			
+				v <- .pwc_utci(v, adjust)			
 				terra::writeValues(out, v, b$row[i], b$nrows[i])
 			}
 		}

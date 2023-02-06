@@ -124,13 +124,13 @@ setMethod("WBGT", signature(x="SpatRasterDataset"),
 		out <- terra::rast(r)
 		wopt <- list(...)
 		if (is.null(wopt$names)) {
-			wopt$names <- paste0("wbgt_", 1:nlyr(out))
+			wopt$names <- paste0("wbgt_", 1:terra::nlyr(out))
 		}
 		if (!is.null(mask)) {
-			if (nlyr(mask) > 1) {
+			if (terra::nlyr(mask) > 1) {
 				stop("mask should have a single layer")			
 			}
-			if (!compareGeom(out, mask)) {
+			if (!terra::compareGeom(out, mask)) {
 				stop("the geometry of mask does not match the geometry of x")
 			}
 			terra::readStart(mask)
