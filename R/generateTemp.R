@@ -43,7 +43,7 @@
 	n <- length(tmin)
 	nyrs <- n / 12
 	if (nyrs %% 1 != 0) {
-		stop('monthly climate data must be complete for a year')
+		stop("monthly climate data must be complete for a year")
 	}
 	reps <- round(reps)
 	stopifnot(reps > 0)
