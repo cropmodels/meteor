@@ -1,5 +1,5 @@
 
-bioclim <- function(prec, tmin, tmax) {
+.bioclim <- function(prec, tmin, tmax) {
 	.bcppvars(prec, tmin, tmax)
 }
 

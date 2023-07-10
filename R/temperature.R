@@ -4,8 +4,8 @@
 
 
 hourlyFromDailyTemp <- function(tmin, tmax, doy, latitude) {
-		d <- cbind(tmin, tmax, doy, latitude)
-    	.Call('_meteor_hourlyFromDailyTemp', PACKAGE = 'meteor', d[,1], d[,2], d[,3], d[,4])
+	d <- cbind(tmin, tmax, doy, latitude)
+    .Call('_meteor_hourlyFromDailyTemp', PACKAGE = 'meteor', d[,1], d[,2], d[,3], d[,4])
 }
 
 

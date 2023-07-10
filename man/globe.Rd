@@ -47,7 +47,11 @@ numeric or SpatRaster
 }
 
 \examples{
-wd <- data.frame(date=as.Date("2003-08-28") + 1:3, temp=c(19.1, 20.6, 19.4), rhum=c(66,71,73), wind=c(3.3, 1.9, 1.1), srad=c(168, 178, 125))
+wd <- data.frame(date=as.Date("2003-08-28") + 1:3, 
+		temp=c(19.1, 20.6, 19.4), 
+		rhum=c(66,71,73), 
+		wind=c(3.3, 1.9, 1.1), 
+		srad=c(168, 178, 125))
 Tg(wd, 40.96) 
 
 Tnwb(wd, 40.96) 

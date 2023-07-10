@@ -29,7 +29,7 @@ matrix with incoming radiation (J/day) and
 \references{
 Goudriaan and Van Laar, 1995.
 
-R.G. Allen, L.S. Pereira, D. Raes and M. Smith (1998). Crop Evaporation - Guidelines for computing crop water requirements. Irrigation and drainage paper 56. FAO, Rome, Italy. \url{http://www.fao.org/docrep/x0490e/x0490e07.htm}
+R.G. Allen, L.S. Pereira, D. Raes and M. Smith (1998). Crop Evaporation - Guidelines for computing crop water requirements. Irrigation and drainage paper 56. FAO, Rome, Italy. \url{https://www.fao.org/3/x0490e/x0490e07.htm}
 }
 
 \author{

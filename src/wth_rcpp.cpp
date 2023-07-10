@@ -34,12 +34,12 @@ NumericMatrix markov_rain(NumericVector rain, NumericVector rainydays, int years
 // [[Rcpp::export(name = ".hourlyFromDailyTemp")]]
 NumericMatrix hourlyFromDailyTemp(NumericVector tmin, NumericVector tmax, NumericVector doy, NumericVector  latitude) {
 	NumericMatrix out(tmin.size(), 24);
-  std::vector<double>  d(24);
+	std::vector<double>  d(24);
 	for (int i=0; i < tmin.size(); i++) {
-			d = dailyToHourlyTemperature(tmin[i], tmax[i], doy[i], latitude[i]);
-			for (int j = 0; j<24; j++) {
-    		out(i,j) = d[j];
-			}
+		d = dailyToHourlyTemperature(tmin[i], tmax[i], doy[i], latitude[i]);
+		for (int j = 0; j<24; j++) {
+			out(i,j) = d[j];
+		}
 	}
 	return(out);
 }
