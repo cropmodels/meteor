@@ -1,11 +1,11 @@
 Package: meteor
 Type: Package
 Title: Meteorological Data Manipulation
-Version: 0.4-4
+Version: 0.4-6
 LinkingTo: Rcpp
 Imports: methods, Rcpp (>= 0.12.4)
 Suggests: terra
-Date: 2023-07-09
+Date: 2023-08-26
 Authors@R: c(person("Robert J.", "Hijmans", role = c("cre", "aut"), email="r.hijmans@gmail.com"), person("Gerald", "Nelson", role = "ctb"), person("Maarten", "Waterloo", role = "ctb"))
 Maintainer: Robert J. Hijmans <r.hijmans@gmail.com>
 Description: A set of functions for weather and climate data manipulation, and other helper functions, to support dynamic ecological modeling, particularly crop and crop disease modeling.

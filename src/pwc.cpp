@@ -244,7 +244,7 @@ std::vector<double> v_utci(const std::vector<double> &ta, const std::vector<doub
 	std::vector<double> out;
 	out.reserve(n);
 	for (size_t i=0; i<n; i++) {
-		out[i] = utci(ta[i], tg[i], va[i], hurs[i]);
+		out.push_back(utci(ta[i], tg[i], va[i], hurs[i]));
 	}
 	return out;
 }
